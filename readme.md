@@ -3,10 +3,8 @@ stundenabrechnung
 
 8. 5. 2012
 
-Gerüst der Einführungsaufgabe in JSF2 etc. für unseren neuen Lehrling Sven Tschui. 
-
-Aufgabe
--------
+Requirements
+------------
 
 Es soll - basierend auf der mitglieferten H2-Datenbank - ein Gui auf die gute alte Stundenabrechnung
 gebaut werden. 
