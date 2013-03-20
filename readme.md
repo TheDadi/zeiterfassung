@@ -49,3 +49,6 @@ URL
 die URL der Applikation lautet: 
 http://localhost:8080/stundenabrechnung/index.jsf
 
+Datebank läuft unter 
+jdbc:hsqldb:hsql://localhost/stundenabrechnung
+
