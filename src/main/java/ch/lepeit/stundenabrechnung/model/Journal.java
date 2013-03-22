@@ -29,7 +29,7 @@ public class Journal implements Serializable {
     private Date datum;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int nr;
 
     private boolean plantaverbucht;
