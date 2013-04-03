@@ -2,16 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
 	<groupId>ch.lepeit</groupId>
 	<artifactId>stundenabrechnung</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-
 	<name>Java EE 6 webapp project</name>
 	<description>A starter Java EE 6 webapp project for use on JBoss AS 7, generated from the jboss-javaee6-webapp archetype</description>
-
-	<properties> 
+	<properties>
 		<!-- Explicitly declaring the source encoding eliminates the following 
 			message: -->
 		<!-- [WARNING] Using platform encoding (UTF-8 actually) to copy filtered 
@@ -23,14 +20,10 @@
 		<maven.build.timestamp.format>yyyyMMdd'T'HHmmss</maven.build.timestamp.format>
 		<!-- Specify the JBoss AS directory to be the JBOSS_HOME environment variable -->
 		<jboss.home>${env.JBOSS_HOME}</jboss.home>
-
 		<!-- RichFaces BOM Version -->
 		<org.richfaces.bom.version>4.3.1.Final</org.richfaces.bom.version>
-
-
 		<javaee6.web.spec.version>2.0.0.Final</javaee6.web.spec.version>
 	</properties>
-
 	<dependencyManagement>
 		<dependencies>
 			<!-- Define the version of JBoss' Java EE 6 APIs we want to import. Any 
@@ -51,8 +44,6 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-
-
 			<!-- Richface Bill-of-Materials -->
 			<dependency>
 				<groupId>org.richfaces</groupId>
@@ -61,17 +52,11 @@
 				<scope>import</scope>
 				<type>pom</type>
 			</dependency>
-
-
-
 		</dependencies>
 	</dependencyManagement>
-
 	<dependencies>
-
 		<!-- First declare the APIs we depend on and need for compilation. All 
 			of them are provided by JBoss AS 7 -->
-
 		<!-- Import the CDI API, we use provided scope as the API is included in 
 			JBoss AS 7 -->
 		<dependency>
@@ -79,7 +64,6 @@
 			<artifactId>cdi-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
-
 		<!-- Import the Common Annotations API (JSR-250), we use provided scope 
 			as the API is included in JBoss AS 7 -->
 		<dependency>
@@ -87,7 +71,6 @@
 			<artifactId>jboss-annotations-api_1.1_spec</artifactId>
 			<scope>provided</scope>
 		</dependency>
-
 		<!-- Import the JAX-RS API, we use provided scope as the API is included 
 			in JBoss AS 7 -->
 		<dependency>
@@ -95,7 +78,6 @@
 			<artifactId>jboss-jaxrs-api_1.1_spec</artifactId>
 			<scope>provided</scope>
 		</dependency>
-
 		<!-- Import the JPA API, we use provided scope as the API is included in 
 			JBoss AS 7 -->
 		<dependency>
@@ -103,7 +85,6 @@
 			<artifactId>hibernate-jpa-2.0-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
-
 		<!-- Import the EJB API, we use provided scope as the API is included in 
 			JBoss AS 7 -->
 		<dependency>
@@ -111,7 +92,6 @@
 			<artifactId>jboss-ejb-api_3.1_spec</artifactId>
 			<scope>provided</scope>
 		</dependency>
-
 		<!-- JSR-303 (Bean Validation) Implementation -->
 		<!-- Provides portable constraints such as @Email -->
 		<!-- Hibernate Validator is shipped in JBoss AS 7 -->
@@ -127,9 +107,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
 		<!-- Now we declare any tools needed -->
-
 		<!-- Annotation processor to generate the JPA 2.0 metamodel classes for 
 			typesafe criteria queries -->
 		<dependency>
@@ -138,7 +116,6 @@
 			<version>1.1.1.Final</version>
 			<scope>provided</scope>
 		</dependency>
-
 		<!-- Needed for running tests (you may also use TestNG) -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -146,7 +123,6 @@
 			<version>4.10</version>
 			<scope>test</scope>
 		</dependency>
-
 		<!-- Optional, but highly recommended -->
 		<!-- Arquillian allows you to test enterprise code such as EJBs and Transactional(JTA) 
 			JPA from JUnit/TestNG -->
@@ -156,7 +132,6 @@
 			<version>1.0.0.CR4</version>
 			<scope>test</scope>
 		</dependency>
-
 		<!-- RichFaces Dependencies -->
 		<dependency>
 			<groupId>org.richfaces.ui</groupId>
@@ -166,24 +141,17 @@
 			<groupId>org.richfaces.core</groupId>
 			<artifactId>richfaces-core-impl</artifactId>
 		</dependency>
-		
-		
 		<!-- Projekt Dependencies -->
-
 		<dependency>
 			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
 			<version>2.2.8</version>
-
 		</dependency>
-
-
 		<dependency>
 			<groupId>org.jsflot</groupId>
 			<artifactId>jsflot</artifactId>
 			<version>0.7.0</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.jboss.spec.javax.faces</groupId>
 			<artifactId>jboss-jsf-api_2.0_spec</artifactId>
@@ -194,15 +162,12 @@
 			<artifactId>jboss-jsf-api_2.0_spec</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		
-
 		<dependency>
 			<groupId>javax.el</groupId>
 			<artifactId>el-api</artifactId>
 			<version>2.2</version>
 		</dependency>
 	</dependencies>
-
 	<build>
 		<!-- Maven will append the version to the finalName (which is the name 
 			given to the generated war, and hence the context root) -->
@@ -228,16 +193,39 @@
 			</plugin>
 			<!-- The JBoss AS plugin deploys your war to a local JBoss AS container -->
 			<!-- To use, set the JBOSS_HOME environment variable and run: mvn package 
-				jboss-as:deploy -->
+				jboss-as:deploy
 			<plugin>
 				<groupId>org.jboss.as.plugins</groupId>
 				<artifactId>jboss-as-maven-plugin</artifactId>
 				<version>7.0.2.Final</version>
-			</plugin>
+			</plugin> -->
 		</plugins>
 	</build>
-
 	<profiles>
+		<profile>
+			<id>StundenabrechnunglocalDeploy</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jboss.as.plugins</groupId>
+						<artifactId>jboss-as-maven-plugin</artifactId>
+						<version>7.3.Final</version>
+						<executions>
+							<execution>
+								<id>deploy-war</id>
+								<phase>install</phase>
+								<goals>
+									<goal>deploy</goal>
+								</goals>
+								<configuration>
+									<port>10000</port>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 		<profile>
 			<!-- The default profile skips all tests, though you can tune it to run 
 				just unit tests based on a custom pattern -->
@@ -259,7 +247,6 @@
 				</plugins>
 			</build>
 		</profile>
-
 		<profile>
 			<!-- We add the JBoss repository as we need the JBoss AS connectors for 
 				Arquillian -->
@@ -280,7 +267,6 @@
 					</snapshots>
 				</repository>
 			</repositories>
-
 			<pluginRepositories>
 				<pluginRepository>
 					<id>jboss-public-repository</id>
@@ -293,7 +279,6 @@
 					</snapshots>
 				</pluginRepository>
 			</pluginRepositories>
-
 			<!-- An optional Arquillian testing profile that executes tests in your 
 				JBoss AS instance -->
 			<!-- This profile will start a new JBoss AS instance, and execute the 
@@ -309,7 +294,6 @@
 				</dependency>
 			</dependencies>
 		</profile>
-
 		<profile>
 			<!-- We add the JBoss repository as we need the JBoss AS connectors for 
 				Arquillian -->
@@ -330,7 +314,6 @@
 					</snapshots>
 				</repository>
 			</repositories>
-
 			<pluginRepositories>
 				<pluginRepository>
 					<id>jboss-public-repository</id>
@@ -343,7 +326,6 @@
 					</snapshots>
 				</pluginRepository>
 			</pluginRepositories>
-
 			<!-- An optional Arquillian testing profile that executes tests in a remote 
 				JBoss AS instance -->
 			<!-- Run with: mvn clean test -Parq-jbossas-remote -->
@@ -357,6 +339,5 @@
 				</dependency>
 			</dependencies>
 		</profile>
-
 	</profiles>
 </project>
