@@ -1,5 +1,7 @@
 @echo off 
 
+set PATH=%PATH%;C:\eplatform\java\jdk1.7.0\jre\bin
+
 rem set DATABASE_DIR=D:\SCRE\git\stundenabrechnung\db\stundenabrechnung
 set DATABASE_DIR=\\C024000\c709360$\DATA\SCRE\stundenabrechnung\stundenabrechnung
 set JBOSS_BIN_DIR=D:\SCRE_Library\jboss-as-7.1.1.Final\bin
