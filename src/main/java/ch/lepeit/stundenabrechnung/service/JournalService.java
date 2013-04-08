@@ -98,7 +98,7 @@ public class JournalService {
     public List<GroupedJournal> getNichtVerbuchteGroupedJournals() {
         TypedQuery<GroupedJournal> journals = em
                 .createQuery(
-                        "SELECT new ch.lepeit.stundenabrechnung.model.GroupedJournal(j.datum, SUM(j.stunden), j.task, MIN(j.plantaverbucht)) FROM Journal j WHERE j.plantaverbucht = false AND j.task.verbuchbar = true GROUP BY j.datum, j.task ORDER BY j.task ASC, j.datum DESC",
+                        "SELECT new ch.lepeit.stundenabrechnung.model.GroupedJournal(j.datum, SUM(j.stunden), j.task, MIN(j.plantaverbucht)) FROM Journal j WHERE j.plantaverbucht = false AND j.task.verbuchbar = true GROUP BY j.datum, j.task ORDER BY j.task ASC, j.datum ASC",
                         GroupedJournal.class);
 
         return journals.getResultList();
