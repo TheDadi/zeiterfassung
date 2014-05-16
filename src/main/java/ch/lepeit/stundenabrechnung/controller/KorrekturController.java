@@ -2,6 +2,7 @@ package ch.lepeit.stundenabrechnung.controller;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import java.util.Observable;
 
 import javax.annotation.PostConstruct;
@@ -10,16 +11,18 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Named;
 
-import org.richfaces.component.UIExtendedDataTable;
+import org.primefaces.event.SelectEvent;
 
-import ch.lepeit.stundenabrechnung.datamodel.JournalDataModel;
+import ch.lepeit.stundenabrechnung.datamodel.JournalModel;
 import ch.lepeit.stundenabrechnung.model.Journal;
+import ch.lepeit.stundenabrechnung.service.JournalService;
 
 /**
  * ViewController für die Korrekturansicht des Journals (korrektur.xhtml)
  * 
- * Stellt alle Journaleinträge sowie alle Tasks zur verfügung. Es gibt noch die möglichkeit einen Journaleintrag zu
- * editieren. Die Journaleinträge werden in Form eines JournalDataModel zur verfügung gestellt, um das Serverseitige
+ * Stellt alle Journaleinträge sowie alle Tasks zur verfügung. Es gibt noch die
+ * möglichkeit einen Journaleintrag zu editieren. Die Journaleinträge werden in
+ * Form eines JournalDataModel zur verfügung gestellt, um das Serverseitige
  * Paging von Richfaces zu ermöglichen.
  * 
  * @author Sven Tschui C910511
@@ -28,60 +31,55 @@ import ch.lepeit.stundenabrechnung.model.Journal;
 @Named
 @SessionScoped
 public class KorrekturController extends Observable implements Serializable {
-    private static final long serialVersionUID = 20120516L;
+	private static final long serialVersionUID = 20120516L;
 
-    @EJB
-    private JournalDataModel buchungen;
 
-    private Journal selectedItem;
+	@EJB
+	private JournalService journalService;
 
-    private Collection<Journal> selection;
+	private Journal selectedItem;
 
-    public JournalDataModel getBuchungen() {
-        return this.buchungen;
-    }
+	private List<Journal> selection;
 
-    public Journal getSelectedItem() {
-        return selectedItem;
-    }
+	private JournalModel journalModel;
 
-    public Collection<Journal> getSelection() {
-        return selection;
-    }
+	public JournalModel getBuchungen() {
 
-    @PostConstruct
-    public void init() {
-        this.selectedItem = null;
-        this.selection = null;
-    }
+		this.selection = journalService.getJournals();
+		this.journalModel = new JournalModel(selection);
+		return journalModel;
 
-    public void selectionListener(AjaxBehaviorEvent event) {
+	}
 
-        this.selectedItem = null;
+	public Journal getSelectedItem() {
+		return selectedItem;
+	}
 
-        UIExtendedDataTable dataTable = (UIExtendedDataTable) event.getComponent();
+	public Collection<Journal> getSelection() {
+		return selection;
+	}
 
-        Object originalKey = dataTable.getRowKey();
+	@PostConstruct
+	public void init() {
+		this.selectedItem = null;
+		this.selection = null;
+	}
 
-        for (Object selectionKey : selection) {
-            dataTable.setRowKey(selectionKey);
-            if (dataTable.isRowAvailable()) {
-                this.selectedItem = (Journal) dataTable.getRowData();
-            }
-        }
+	public void onRowSelect(SelectEvent event) {
+		
+		this.selectedItem = (Journal) event.getObject();
+		this.setChanged();
+		this.notifyObservers();
+	}
 
-        this.setChanged();
-        this.notifyObservers();
+	public void setSelectedItem(Journal selectedItem) {
 
-        dataTable.setRowKey(originalKey);
+		this.selectedItem = selectedItem;
+		this.setChanged();
+		this.notifyObservers();
+	}
 
-    }
-
-    public void setSelectedItem(Journal selectedItem) {
-        this.selectedItem = selectedItem;
-    }
-
-    public void setSelection(Collection<Journal> selection) {
-        this.selection = selection;
-    }
+	public void setSelection(List<Journal> selection) {
+		this.selection = selection;
+	}
 }

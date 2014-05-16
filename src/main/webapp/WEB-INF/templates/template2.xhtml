@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+<h:head>
+	<title>Zeiterfassung</title>
+	<h:outputStylesheet library="css" name="fonts.css" />
+
+	<h:outputStylesheet library="css" name="default.css" />
+	<h:outputStylesheet library="css" name="screen.css" />
+</h:head>
+<body>
+	<div id="page" class="container">
+		<div id="header">
+			<div id="logo">
+				<h:graphicImage library="images" name="uhr.gif"
+					style="width:80%; height:auto"></h:graphicImage>
+				<h1>
+					<a href="#">Zeiterfassung</a>
+				</h1>
+				<span>Design by Banana</span>
+			</div>
+			<ui:insert name="cph_menu">
+				<div id="menu">
+					<ul>
+						<li class="current_page_item"><h:outputLink
+								value="newindex.xhtml">Home</h:outputLink></li>
+						<li><h:outputLink value="newjournal.xhtml">Übersicht</h:outputLink></li>
+						<li><a href="newkorrektur.xhtml" accesskey="3" title="">Korrektur</a></li>
+						<li><a href="newtask.xhtml" accesskey="4" title="">Task</a></li>
+						<li><p:commandLink
+								actionListener="#{verbuchenController.reload}"
+								action="newverbuchen.xhtml" accesskey="5" title=""
+								immediate="true">Verbuchen</p:commandLink></li>
+						<li><a href="newauswertung.xhtml" accesskey="6" title="">Auswertung</a></li>
+					</ul>
+				</div>
+			</ui:insert>
+		</div>
+		<div id="main">
+			<div id="banner">
+				<h:graphicImage library="images" name="bg.jpg"
+					style="width:auto; height:100px"></h:graphicImage>
+			</div>
+
+			<div id="featured">
+				<ui:insert name="cph_content">
+					<div class="title"></div>
+					<div></div>
+				</ui:insert>
+
+			</div>
+			<div id="copyright">
+				<span>Copyright (c) 2013 ZeiterfassungRemy.ch | All rights
+					reserved. | Banana </span>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+
+

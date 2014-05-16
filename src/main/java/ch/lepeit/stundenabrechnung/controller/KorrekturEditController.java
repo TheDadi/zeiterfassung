@@ -44,6 +44,14 @@ public class KorrekturEditController implements Serializable, Observer {
         return journal;
     }
 
+    public void setJournalService(JournalService journalService) {
+		this.journalService = journalService;
+	}
+    
+    public void setJournal(Journal journal) {
+		this.journal = journal;
+	}
+    
     public String getTask() {
         if (journal == null || journal.getTask() == null) {
             return null;
@@ -63,12 +71,16 @@ public class KorrekturEditController implements Serializable, Observer {
         this.korrekturController.addObserver(this);
     }
 
-    public void remove() {
+    public String remove() {
+    	System.out.println("digi");
         journalService.delete(this.journal);
+        this.journal = null;
+		return null;
     }
 
-    public void save() {
+    public String save() {
         journalService.update(this.journal);
+		return null;
     }
 
     public void setTask(String task) {
@@ -77,6 +89,8 @@ public class KorrekturEditController implements Serializable, Observer {
 
     @Override
     public void update(Observable o, Object arg) {
+    	System.out.println("update Journal");
         this.journal = korrekturController.getSelectedItem();
     }
+    
 }

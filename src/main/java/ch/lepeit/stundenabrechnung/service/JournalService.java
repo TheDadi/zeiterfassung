@@ -66,6 +66,19 @@ public class JournalService {
 
         return journals.getResultList();
     }
+    /**
+     * Erstellt eine Liste von Journaleinträgen für einen Wochentag.
+     * 
+     * @param tag
+     * Tag, für welchen die Liste erstellt werden soll.
+     * @return Liste der Journaleinträge
+     */
+    public List<Journal> getJournals() {
+        TypedQuery<Journal> journals = em.createQuery("SELECT j FROM Journal j ORDER BY nr Desc", Journal.class);
+
+
+        return journals.getResultList();
+    }
 
     /**
      * Erstellt eine Liste von gruppierten Journaleinträgen, welche mit einem nicht verbuchbaren Task verknüpft sind,

@@ -10,4 +10,12 @@
 		<param-name>org.richfaces.skin</param-name>
 		<param-value>blueSky</param-value>
 	</context-param>
+	<context-param>
+		<param-name>primefaces.THEME</param-name>
+		<param-value>bootstrap</param-value>
+	</context-param>
+	<mime-mapping>
+		<extension>js</extension>
+		<mime-type>text/javascript</mime-type>
+	</mime-mapping>
 </web-app>

@@ -5,11 +5,14 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich"
-	template="/WEB-INF/templates/default.xhtml">
+	template="/WEB-INF/templates/default.xhtml"
+	xmlns:p="http://primefaces.org/ui">
 	<ui:define name="content">
-		<h:form>
+
+
+
 			<rich:tabPanel switchType="server" styleClass="tabPanel"
-				immediate="true">
+				immediate="true" headerClass="google">
 				<rich:tab name="Journal">
 					<ui:include src="journal.xhtml" />
 				</rich:tab>
@@ -26,6 +29,6 @@
 					<ui:include src="auswertung.xhtml" />
 				</rich:tab>
 			</rich:tabPanel>
-		</h:form>
+
 	</ui:define>
 </ui:composition>

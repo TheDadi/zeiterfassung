@@ -20,7 +20,8 @@
 		<maven.build.timestamp.format>yyyyMMdd'T'HHmmss</maven.build.timestamp.format>
 		<!-- Specify the JBoss AS directory to be the JBOSS_HOME environment variable -->
 		<jboss.home>${env.JBOSS_HOME}</jboss.home>
-		
+		<!-- RichFaces BOM Version -->
+		<org.richfaces.bom.version>4.3.1.Final</org.richfaces.bom.version>
 		<javaee6.web.spec.version>2.0.0.Final</javaee6.web.spec.version>
 	</properties>
 	<dependencyManagement>
@@ -43,16 +44,17 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			
-			
+			<!-- Richface Bill-of-Materials -->
+			<dependency>
+				<groupId>org.richfaces</groupId>
+				<artifactId>richfaces-bom</artifactId>
+				<version>${org.richfaces.bom.version}</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
-		<dependency>
-			<groupId>org.primefaces</groupId>
-			<artifactId>primefaces</artifactId>
-			<version>5.0</version>
-		</dependency>
 		<!-- First declare the APIs we depend on and need for compilation. All 
 			of them are provided by JBoss AS 7 -->
 		<!-- Import the CDI API, we use provided scope as the API is included in 
@@ -130,7 +132,15 @@
 			<version>1.0.0.CR4</version>
 			<scope>test</scope>
 		</dependency>
-		
+		<!-- RichFaces Dependencies -->
+		<dependency>
+			<groupId>org.richfaces.ui</groupId>
+			<artifactId>richfaces-components-ui</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.richfaces.core</groupId>
+			<artifactId>richfaces-core-impl</artifactId>
+		</dependency>
 		<!-- Projekt Dependencies -->
 		<dependency>
 			<groupId>org.hsqldb</groupId>
@@ -183,8 +193,12 @@
 			</plugin>
 			<!-- The JBoss AS plugin deploys your war to a local JBoss AS container -->
 			<!-- To use, set the JBOSS_HOME environment variable and run: mvn package 
-				jboss-as:deploy <plugin> <groupId>org.jboss.as.plugins</groupId> <artifactId>jboss-as-maven-plugin</artifactId> 
-				<version>7.0.2.Final</version> </plugin> -->
+				jboss-as:deploy
+			<plugin>
+				<groupId>org.jboss.as.plugins</groupId>
+				<artifactId>jboss-as-maven-plugin</artifactId>
+				<version>7.0.2.Final</version>
+			</plugin> -->
 		</plugins>
 	</build>
 	<profiles>

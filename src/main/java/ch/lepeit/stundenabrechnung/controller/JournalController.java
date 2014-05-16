@@ -18,9 +18,10 @@ import ch.lepeit.stundenabrechnung.service.JournalService;
 /**
  * ViewController für die Anzeige des Wochenjournals (journal.xhtml)
  * 
- * Es wird eine Woche in Form einer Liste von Wochentagen (nur Arbeitstage) bereitgestellt. Für jeden Wochentag stehen
- * somit alle Buchungen zur verfügung. Es gibt eine "paging"-Funktion, mit welcher die Woche, zu welcher die Daten
- * bereitgestellt werden geändert werden kann.
+ * Es wird eine Woche in Form einer Liste von Wochentagen (nur Arbeitstage)
+ * bereitgestellt. Für jeden Wochentag stehen somit alle Buchungen zur
+ * verfügung. Es gibt eine "paging"-Funktion, mit welcher die Woche, zu welcher
+ * die Daten bereitgestellt werden geändert werden kann.
  * 
  * @author Sven Tschui C910511
  * 
@@ -28,73 +29,77 @@ import ch.lepeit.stundenabrechnung.service.JournalService;
 @Named
 @SessionScoped
 public class JournalController implements Serializable {
-    private static final long serialVersionUID = 20120516L;
+	private static final long serialVersionUID = 20120516L;
 
-    @EJB
-    private JournalService journalService;
+	@EJB
+	private JournalService journalService;
 
-    private Date woche;
+	private Date woche;
 
-    private List<Wochentag> wochentage;
+	private List<Wochentag> wochentage;
 
-    public Date getWoche() {
-        return woche;
-    }
+	public Date getWoche() {
+		return woche;
+	}
 
-    public List<Wochentag> getWochentage() {
-        return wochentage;
-    }
+	public List<Wochentag> getWochentage() {
+		Calendar c = new GregorianCalendar();
+		c.setTime(this.getWoche());
+		this.loadWoche(c.getTime());
+		return wochentage;
+	}
 
-    @PostConstruct
-    public void init() {
-        // Startdatum auf Tagesdatum setzen, Wochentage berechnen und Buchungen
-        // laden
-        this.loadWoche(new Date());
-    }
+	@PostConstruct
+	public void init() {
+		// Startdatum auf Tagesdatum setzen, Wochentage berechnen und Buchungen
+		// laden
+		this.loadWoche(new Date());
+	}
 
-    public String letzteWoche() {
-        Calendar c = new GregorianCalendar();
+	public String letzteWoche() {
+		Calendar c = new GregorianCalendar();
 
-        c.setTime(this.getWoche());
+		c.setTime(this.getWoche());
 
-        c.add(Calendar.WEEK_OF_MONTH, -1);
+		c.add(Calendar.WEEK_OF_MONTH, -1);
 
-        this.loadWoche(c.getTime());
+		this.loadWoche(c.getTime());
 
-        return null;
-    }
+		return null;
+	}
 
-    private void loadWoche(Date woche) {
-        this.woche = woche;
+	private void loadWoche(Date woche) {
+		this.woche = woche;
 
-        this.wochentage = new Vector<Wochentag>();
+		this.wochentage = new Vector<Wochentag>();
 
-        Calendar c = new GregorianCalendar();
+		Calendar c = new GregorianCalendar();
 
-        c.setTime(woche);
+		c.setTime(woche);
 
-        c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+		c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 
-        for (int i = 0; i < 5; i++) {
-            this.wochentage.add(new Wochentag(c.getTime(), journalService.getGroupedJournals(c.getTime())));
-            c.add(Calendar.DAY_OF_MONTH, 1);
-        }
-    }
+		for (int i = 0; i < 5; i++) {
+			this.wochentage.add(new Wochentag(c.getTime(), journalService
+					.getGroupedJournals(c.getTime())));
+			c.add(Calendar.DAY_OF_MONTH, 1);
+		}
+	}
 
-    public String naechsteWoche() {
-        Calendar c = new GregorianCalendar();
+	public String naechsteWoche() {
+		Calendar c = new GregorianCalendar();
 
-        c.setTime(this.getWoche());
+		c.setTime(this.getWoche());
 
-        c.add(Calendar.WEEK_OF_MONTH, 1);
+		c.add(Calendar.WEEK_OF_MONTH, 1);
 
-        this.loadWoche(c.getTime());
+		this.loadWoche(c.getTime());
 
-        return null;
-    }
+		return null;
+	}
 
-    public void reload() {
-        this.loadWoche(this.getWoche());
-    }
+	public void reload() {
+		this.loadWoche(this.getWoche());
+	}
 
 }
