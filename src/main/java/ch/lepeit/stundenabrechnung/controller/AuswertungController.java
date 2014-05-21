@@ -14,8 +14,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.jsflot.xydata.XYDataList;
-import org.jsflot.xydata.XYDataSetCollection;
+import org.primefaces.model.chart.PieChartModel;
 
 import ch.lepeit.stundenabrechnung.model.BuchartStunden;
 import ch.lepeit.stundenabrechnung.model.GroupedJournal;
@@ -26,8 +25,10 @@ import ch.lepeit.stundenabrechnung.service.JournalService;
 /**
  * ViewController für den Auswertungstab (auswertung.xhtml)
  * 
- * Stellt die Daten für das Kuchendiagramm sowie für die Liste der nicht verbuchbaren Journaleinträge bereit. Für diese
- * Daten wird auch eine "paging"-Funktion bereit gestellt, um den Monat, von welchem die Daten sind zu ändern.
+ * Stellt die Daten für das Kuchendiagramm sowie für die Liste der nicht
+ * verbuchbaren Journaleinträge bereit. Für diese Daten wird auch eine
+ * "paging"-Funktion bereit gestellt, um den Monat, von welchem die Daten sind
+ * zu ändern.
  * 
  * @author Sven Tschui C910511
  * 
@@ -35,108 +36,131 @@ import ch.lepeit.stundenabrechnung.service.JournalService;
 @Named
 @RequestScoped
 public class AuswertungController implements Serializable, Observer {
-    private static final long serialVersionUID = 20120524L;
+	private static final long serialVersionUID = 20120524L;
 
-    @EJB
-    private AuswertungService auswertungService;
+	@EJB
+	private AuswertungService auswertungService;
 
-    private XYDataSetCollection buchartChart;
+	@EJB
+	private JournalService journalService;
 
-    @EJB
-    private JournalService journalService;
+	private List<GroupedJournal> nichtVerbuchbar;
 
-    private List<GroupedJournal> nichtVerbuchbar;
+	@Inject
+	private AuswertungPagingController pagingController;
 
-    @Inject
-    private AuswertungPagingController pagingController;
+	private PieChartModel verbuchbarChart;
+	private PieChartModel buchartChart;
 
-    private XYDataSetCollection verbuchbarChart;
+	private PieChartModel createBuchartChart(Date date) {
+		List<BuchartStunden> list = auswertungService.getBuchartProMonat(date);
 
-    private XYDataSetCollection createBuchartChart(Date date) {
-        List<BuchartStunden> list = auswertungService.getBuchartProMonat(date);
+		buchartChart = new PieChartModel();
+		buchartChart.setMouseoverHighlight(true);
+		buchartChart.setLegendPosition("e");
+		buchartChart.setFill(true);
+		buchartChart.setShowDataLabels(true);
+		buchartChart.setDiameter(150);
 
-        XYDataSetCollection dataSet = new XYDataSetCollection();
-        XYDataList dataList;
+		for (BuchartStunden v : list) {
+			buchartChart.set(createLabel(v.getStunden(), v.getBuchart()),
+					v.getStunden());
+		}
+		if (list.isEmpty()) {
+			buchartChart.set("No Data found", 0);
+		}
 
-        for (BuchartStunden v : list) {
-            dataList = new XYDataList();
-            dataList.setLabel(createLabel(v.getStunden(), v.getBuchart()));
-            dataList.addDataPoint(1, v.getStunden());
-            dataSet.addDataList(dataList);
-        }
+		return buchartChart;
+	}
 
-        return dataSet;
-    }
+	public String createLabel(Double stunden, boolean verbuchbar) {
+		NumberFormat stundenFormat = NumberFormat.getNumberInstance();
+		stundenFormat.setMaximumFractionDigits(0);
 
-    public String createLabel(Double stunden, boolean verbuchbar) {
-        NumberFormat stundenFormat = NumberFormat.getNumberInstance();
-        stundenFormat.setMaximumFractionDigits(0);
+		NumberFormat tagFormat = NumberFormat.getNumberInstance();
+		tagFormat.setMaximumFractionDigits(1);
 
-        NumberFormat tagFormat = NumberFormat.getNumberInstance();
-        tagFormat.setMaximumFractionDigits(1);
+		return stundenFormat.format(stunden) + " Stunden / "
+				+ tagFormat.format(stunden / 8.4) + " Tage "
+				+ (verbuchbar ? "Verbuchbar" : "Nicht verbuchbar");
+	}
 
-        return stundenFormat.format(stunden) + " Stunden / " + tagFormat.format(stunden / 8.4) + " Tage "
-                + (verbuchbar ? "Verbuchbar" : "Nicht verbuchbar");
-    }
+	public String createLabel(Double stunden, String tool) {
+		NumberFormat stundenFormat = NumberFormat.getNumberInstance();
+		stundenFormat.setMaximumFractionDigits(0);
 
-    public String createLabel(Double stunden, String tool) {
-        NumberFormat stundenFormat = NumberFormat.getNumberInstance();
-        stundenFormat.setMaximumFractionDigits(0);
+		NumberFormat tagFormat = NumberFormat.getNumberInstance();
+		tagFormat.setMaximumFractionDigits(1);
 
-        NumberFormat tagFormat = NumberFormat.getNumberInstance();
-        tagFormat.setMaximumFractionDigits(1);
+		return stundenFormat.format(stunden) + " Stunden / "
+				+ tagFormat.format(stunden / 8.4) + " Tage " + tool;
+	}
 
-        return stundenFormat.format(stunden) + " Stunden / " + tagFormat.format(stunden / 8.4) + " Tage " + tool;
-    }
+	private PieChartModel createVerbuchbarChart(Date date) {
+		List<Verbuchbar> list = auswertungService.getVerbuchbar(date);
 
-    private XYDataSetCollection createVerbuchbarChart(Date date) {
-        List<Verbuchbar> list = auswertungService.getVerbuchbar(date);
+		verbuchbarChart = new PieChartModel();
 
-        XYDataSetCollection dataSet = new XYDataSetCollection();
-        XYDataList dataList;
+		int i = 0;
+		for (Verbuchbar v : list) {
 
-        for (Verbuchbar v : list) {
-            dataList = new XYDataList();
-            dataList.setLabel(createLabel(v.getZeit(), v.isVerbuchbar()));
-            dataList.addDataPoint(1, v.getZeit());
-            dataList.setColor((v.isVerbuchbar() ? "#22DD22" : "#FF0000")); // grün / rot
-            dataSet.addDataList(dataList);
-        }
+			verbuchbarChart.set(createLabel(v.getZeit(), v.isVerbuchbar()),
+					v.getZeit());
+			if (i == 0) {
+				if (v.isVerbuchbar() == true) {
+					verbuchbarChart.setSeriesColors("04B404, DF0101");
+				} else {
+					verbuchbarChart.setSeriesColors("DF0101, 04B404");
+				}
+				i++;
+			}
+		}
 
-        return dataSet;
-    }
+		verbuchbarChart.setLegendPosition("e");
+		verbuchbarChart.setFill(true);
+		verbuchbarChart.setShowDataLabels(true);
+		verbuchbarChart.setDiameter(150);
+		verbuchbarChart.setMouseoverHighlight(true);
 
-    @PreDestroy
-    public void destruct() {
-        this.pagingController.deleteObserver(this);
-    }
+		if (list.isEmpty()) {
+			verbuchbarChart.set("No Data found", 0);
+		}
 
-    public XYDataSetCollection getBuchartChart() {
-        return buchartChart;
-    }
+		return verbuchbarChart;
+	}
 
-    public List<GroupedJournal> getNichtVerbuchbar() {
-        return this.nichtVerbuchbar;
-    }
+	@PreDestroy
+	public void destruct() {
+		this.pagingController.deleteObserver(this);
+	}
 
-    public XYDataSetCollection getVerbuchbarChart() {
-        return verbuchbarChart;
-    }
+	public PieChartModel getBuchartChart() {
+		return buchartChart;
+	}
 
-    @PostConstruct
-    public void init() {
-        this.pagingController.addObserver(this);
-        this.loadMonat(this.pagingController.getMonat());
-    }
+	public List<GroupedJournal> getNichtVerbuchbar() {
+		return this.nichtVerbuchbar;
+	}
 
-    private void loadMonat(Date monat) {
-        nichtVerbuchbar = journalService.getNichtVerbuchbarGroupedJournals(monat);
-        verbuchbarChart = createVerbuchbarChart(monat);
-        buchartChart = createBuchartChart(monat);
-    }
+	public PieChartModel getVerbuchbarChart() {
+		return verbuchbarChart;
+	}
 
-    @Override
-    public void update(Observable o, Object arg) {
-        this.loadMonat(this.pagingController.getMonat());
-    }
+	@PostConstruct
+	public void init() {
+		this.pagingController.addObserver(this);
+		this.loadMonat(this.pagingController.getMonat());
+	}
+
+	private void loadMonat(Date monat) {
+		nichtVerbuchbar = journalService
+				.getNichtVerbuchbarGroupedJournals(monat);
+		verbuchbarChart = createVerbuchbarChart(monat);
+		buchartChart = createBuchartChart(monat);
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		this.loadMonat(this.pagingController.getMonat());
+	}
 }
