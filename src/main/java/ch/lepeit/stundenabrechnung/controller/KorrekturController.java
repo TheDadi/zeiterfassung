@@ -8,7 +8,6 @@ import java.util.Observable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Named;
 
 import org.primefaces.event.SelectEvent;

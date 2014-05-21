@@ -3,72 +3,82 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:a4j="http://richfaces.org/a4j"
-	xmlns:rich="http://richfaces.org/rich">
+	template="/WEB-INF/templates/template2.xhtml"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="cph_menu">
 
-	<a4j:outputPanel id="verbuchen">
+		<div id="menu">
+			<ul>
+				<li><h:outputLink value="index.xhtml">Home</h:outputLink></li>
+				<li><h:outputLink value="journal.xhtml">Übersicht</h:outputLink></li>
+				<li><a href="korrektur.xhtml" accesskey="3" title="">Korrektur</a></li>
+				<li><a href="task.xhtml" accesskey="4" title="">Task</a></li>
+				<li class="current_page_item"><p:commandLink
+						actionListener="#{verbuchenController.reload}"
+						action="verbuchen.xhtml" accesskey="5" title="" immediate="true">Verbuchen</p:commandLink></li>
+				<li><a href="auswertung.xhtml" accesskey="6" title="">Auswertung</a></li>
+			</ul>
+		</div>
 
-		<rich:dataTable keepSaved="true"
-			value="#{verbuchenController.buchungen}" iterationStatusVar="it"
-			var="journal" selectionMode="none" rows="10" id="verbuchen-table">
 
-			<rich:column>
-				<f:facet name="header">
+	</ui:define>
+	<ui:define name="cph_content">
+		<h:form id="form">
+			<p:outputPanel id="verbuchen">
+
+				<p:dataTable scrollable="true" scrollHeight="150"
+					id="verbuchen-table" value="#{verbuchenController.buchungen}"
+					var="journal">
+
+					<p:column>
+						<f:facet name="header">
 					Datum
 				</f:facet>
-				<h:outputText value="#{journal.datum}" />
-			</rich:column>
+						<h:outputText value="#{journal.datum}" />
+					</p:column>
 
-			<rich:column>
-				<f:facet name="header">
+					<p:column>
+						<f:facet name="header">
 						Stunden
 				</f:facet>
-				<h:outputText value="#{journal.stunden}" />
-			</rich:column>
+						<h:outputText value="#{journal.stunden}" />
+					</p:column>
 
-			<rich:column>
-				<f:facet name="header">
+					<p:column>
+						<f:facet name="header">
 					Task
 				</f:facet>
-				<h:outputText value="#{journal.task.name}" />
-			</rich:column>
+						<h:outputText value="#{journal.task.name}" />
+					</p:column>
 
-			<rich:column>
-				<f:facet name="header">
+					<p:column>
+						<f:facet name="header">
 					Plantaname
 				</f:facet>
-				<h:outputText value="#{journal.task.plantaname}" />
-			</rich:column>
+						<h:outputText value="#{journal.task.plantaname}" />
+					</p:column>
 
-			<rich:column>
-				<f:facet name="header">
+					<p:column>
+						<f:facet name="header">
 					Verbucht
 				</f:facet>
-				<h:graphicImage rendered="#{journal.plantaverbucht}" library="gfx" name="checkbox_yes.png" />
-				<a4j:commandLink rendered="#{!journal.plantaverbucht}" action="#{verbuchenController.verbuchen(journal)}" render=":verbuchen" >
-					<h:graphicImage name="gfx/checkbox_no.png" />
-				</a4j:commandLink>
-			</rich:column>
+						<p:commandLink
+							actionListener="#{verbuchenController.verbuchen(journal)}"
+							update=":form:verbuchen">
+							<p:selectBooleanCheckbox id="task-verbuchbar"
+								value="#{journal.plantaverbucht}" />
+						</p:commandLink>
 
-			<f:facet name="footer">
-			
-				<rich:dataScroller for="verbuchen-table" maxPages="5" >
 
-					<f:facet name="first">
-						<h:outputText value="Erste Seite" />
-					</f:facet>
+					</p:column>
 
-					<f:facet name="last">
-						<h:outputText value="Letzte Seite" />
-					</f:facet>
 
-				</rich:dataScroller>
 
-			</f:facet>
+				</p:dataTable>
 
-		</rich:dataTable>
-				
-		<a4j:commandButton action="#{verbuchenController.reload}" render=":verbuchen" value="Aktualisieren" />
 
-	</a4j:outputPanel>
+
+			</p:outputPanel>
+		</h:form>
+	</ui:define>
 </ui:composition>

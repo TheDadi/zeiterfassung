@@ -3,62 +3,98 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:a4j="http://richfaces.org/a4j"
-	xmlns:rich="http://richfaces.org/rich">
+	template="/WEB-INF/templates/template2.xhtml"
+	xmlns:p="http://primefaces.org/ui">
 
-	<h:panelGroup id="journal">
+	<ui:define name="cph_menu">
 
-		<!-- Hinzufuegen eines Journal Eintrags -->
-		<ui:include src="journalAdd.xhtml" />
+		<div id="menu">
+			<ul>
+				<li ><h:outputLink
+						value="index.xhtml">Home</h:outputLink></li>
+				<li class="current_page_item"><h:outputLink value="journal.xhtml" >Übersicht</h:outputLink></li>
+				<li><a href="korrektur.xhtml" accesskey="3" title="">Korrektur</a></li>
+				<li><a href="task.xhtml" accesskey="4" title="">Task</a></li>
+				<li><p:commandLink
+						actionListener="#{verbuchenController.reload}"
+						action="verbuchen.xhtml" accesskey="5" title=""
+						immediate="true">Verbuchen</p:commandLink></li>
+				<li><a href="auswertung.xhtml" accesskey="6" title="">Auswertung</a></li>
+			</ul>
+		</div>
+	
 
-		<!-- Anzeige der Woche -->
-		<a4j:outputPanel id="journal-woche">
+	</ui:define>
+	<ui:define name="cph_content">
+		<h:form>
+			<h:panelGroup id="journal">
 
-			<h:panelGrid columns="3" class="journalWochen">
 
-				<a4j:commandLink action="#{journalController.letzteWoche}"
-					render=":journal-woche" immediate="true" styleClass="letzteWoche" />
+				<!-- Hinzufuegen eines Journal Eintrags -->
+				<ui:include src="journalAdd.xhtml" />
 
-				<rich:dataGrid columns="5" elements="5"
-					value="#{journalController.wochentage}" var="tag"
-					styleClass="journalGrid">
-					<f:facet name="header">
-						<h:outputText value="Woche " />
-						<h:outputText value="#{journalController.woche}">
-							<f:convertDateTime pattern="w, MMMM yyyy" />
-						</h:outputText>
-					</f:facet>
 
-					<rich:dataTable var="buchung" value="#{tag.buchungen}">
-						<f:facet name="header">
-							<h:outputText value="#{tag.datum}">
-								<f:convertDateTime pattern="E. d" />
-							</h:outputText>
-						</f:facet>
+				<!-- Anzeige der Woche -->
 
-						<f:facet name="footer">
-							<h:outputText value="Total " />
-							<h:outputText value="#{tag.total}">
-								<f:convertNumber maxFractionDigits="1" minFractionDigits="1" />
-							</h:outputText>
-						</f:facet>
 
-						<rich:column>
-							<h:outputText value="#{buchung.stunden}" />
-						</rich:column>
+				<p:outputPanel id="journal-woche">
 
-						<rich:column>
-							<h:outputText value="#{buchung.task.name}" />
-						</rich:column>
-					</rich:dataTable>
-				</rich:dataGrid>
+					<h:panelGrid columns="3" class="journalWochen">
 
-				<a4j:commandLink action="#{journalController.naechsteWoche}"
-					render=":journal-woche" immediate="true" styleClass="naechsteWoche" />
 
-			</h:panelGrid>
-		</a4j:outputPanel>
+						<p:commandLink id="letzteWoche"
+							actionListener="#{journalController.letzteWoche}"
+							styleClass="letzteWoche" update="journal-woche" immediate="true">
 
-	</h:panelGroup>
+						</p:commandLink>
+						<p:dataGrid columns="5" rows="5" var="tag"
+							value="#{journalController.wochentage}">
+							<f:facet name="header">
+								<h:outputText value="Week " />
+								<h:outputText value="#{journalController.woche}">
+									<f:convertDateTime pattern="w, MMMM yyyy" />
+								</h:outputText>
+							</f:facet>
+
+
+
+							<p:dataTable var="buchung" value="#{tag.buchungen}" id="table">
+								<f:facet name="header">
+									<h:outputText value="#{tag.datum}">
+										<f:convertDateTime pattern="E. d" />
+									</h:outputText>
+								</f:facet>
+
+								<f:facet name="footer">
+									<h:outputText value="Total " />
+									<h:outputText value="#{tag.total}">
+										<f:convertNumber maxFractionDigits="1" minFractionDigits="1" />
+									</h:outputText>
+								</f:facet>
+								<p:column>
+									<h:outputText value="#{buchung.stunden}" />
+								</p:column>
+								<p:column>
+									<h:outputText value="#{buchung.task.name}" />
+								</p:column>
+							</p:dataTable>
+
+
+						</p:dataGrid>
+
+						<p:commandLink id="neachsteWoche"
+							actionListener="#{journalController.naechsteWoche}"
+							styleClass="naechsteWoche" update="journal-woche"
+							immediate="true">
+
+						</p:commandLink>
+
+					</h:panelGrid>
+
+				</p:outputPanel>
+
+			</h:panelGroup>
+		</h:form>
+	</ui:define>
 
 </ui:composition>

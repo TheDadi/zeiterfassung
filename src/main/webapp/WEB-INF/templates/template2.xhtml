@@ -29,15 +29,14 @@
 				<div id="menu">
 					<ul>
 						<li class="current_page_item"><h:outputLink
-								value="newindex.xhtml">Home</h:outputLink></li>
-						<li><h:outputLink value="newjournal.xhtml">Übersicht</h:outputLink></li>
-						<li><a href="newkorrektur.xhtml" accesskey="3" title="">Korrektur</a></li>
-						<li><a href="newtask.xhtml" accesskey="4" title="">Task</a></li>
+								value="index.xhtml">Home</h:outputLink></li>
+						<li><h:outputLink value="journal.xhtml">Übersicht</h:outputLink></li>
+						<li><a href="korrektur.xhtml" accesskey="3" title="">Korrektur</a></li>
+						<li><a href="task.xhtml" accesskey="4" title="">Task</a></li>
 						<li><p:commandLink
 								actionListener="#{verbuchenController.reload}"
-								action="newverbuchen.xhtml" accesskey="5" title=""
-								immediate="true">Verbuchen</p:commandLink></li>
-						<li><a href="newauswertung.xhtml" accesskey="6" title="">Auswertung</a></li>
+								action="verbuchen.xhtml" accesskey="5" title="" immediate="true">Verbuchen</p:commandLink></li>
+						<li><a href="auswertung.xhtml" accesskey="6" title="">Auswertung</a></li>
 					</ul>
 				</div>
 			</ui:insert>

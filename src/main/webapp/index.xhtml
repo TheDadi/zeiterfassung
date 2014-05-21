@@ -3,32 +3,15 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:a4j="http://richfaces.org/a4j"
-	xmlns:rich="http://richfaces.org/rich"
-	template="/WEB-INF/templates/default.xhtml"
+	template="/WEB-INF/templates/template2.xhtml"
 	xmlns:p="http://primefaces.org/ui">
-	<ui:define name="content">
-
-
-
-			<rich:tabPanel switchType="server" styleClass="tabPanel"
-				immediate="true" headerClass="google">
-				<rich:tab name="Journal">
-					<ui:include src="journal.xhtml" />
-				</rich:tab>
-				<rich:tab name="Korrektur">
-					<ui:include src="korrektur.xhtml" />
-				</rich:tab>
-				<rich:tab name="Verbuchen">
-					<ui:include src="verbuchen.xhtml" />
-				</rich:tab>
-				<rich:tab name="Tasks">
-					<ui:include src="task.xhtml" />
-				</rich:tab>
-				<rich:tab name="Auswertung">
-					<ui:include src="auswertung.xhtml" />
-				</rich:tab>
-			</rich:tabPanel>
-
+	<ui:define name="cph_content">
+	
+		<h:form id="form">
+		
+		<h1>Die neue Zeiterfassung</h1>
+		<p>Super Truper Content</p>
+	
+		</h:form>
 	</ui:define>
 </ui:composition>

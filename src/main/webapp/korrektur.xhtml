@@ -3,81 +3,69 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:a4j="http://richfaces.org/a4j"
-	xmlns:rich="http://richfaces.org/rich">
+	template="/WEB-INF/templates/template2.xhtml"
+	xmlns:p="http://primefaces.org/ui">
 	<!-- TODO: Load by AJAX / Size-->
+	<ui:define name="cph_menu">
 
-	<h:panelGroup layout="block" id="korrektur" >
-
-			<rich:extendedDataTable keepSaved="true"
-				value="#{korrekturController.buchungen}"
-				iterationStatusVar="it" var="journal" selectionMode="single"
-				selection="#{korrekturController.selection}" rows="20"
-				id="korrektur-table">
-
-				<a4j:ajax execute="@this" event="selectionchange" immediate="true"
-					listener="#{korrekturController.selectionListener}"
-					render="korrektur" />
-
-				<rich:column>
-					<f:facet name="header">
-							Nr
-						</f:facet>
-					<h:outputText value="#{journal.nr}" />
-				</rich:column>
-
-				<rich:column>
-					<f:facet name="header">
-							Datum
-						</f:facet>
-					<h:outputText value="#{journal.datum}" />
-				</rich:column>
-
-				<rich:column>
-					<f:facet name="header">
-								Stunden
-						</f:facet>
-					<h:outputText value="#{journal.stunden}" />
-				</rich:column>
-
-				<rich:column>
-					<f:facet name="header">
-							Task
-						</f:facet>
-					<h:outputText value="#{journal.task.name}" />
-				</rich:column>
-
-				<rich:column>
-					<f:facet name="header">
-							Bemerkung
-						</f:facet>
-					<h:outputText value="#{journal.bemerkung}" />
-				</rich:column>
-
-				<f:facet name="footer">
+		<div id="menu">
+			<ul>
+				<li><h:outputLink value="index.xhtml">Home</h:outputLink></li>
+				<li><h:outputLink value="journal.xhtml">Übersicht</h:outputLink></li>
+				<li class="current_page_item"><a href="korrektur.xhtml"
+					accesskey="3" title="">Korrektur</a></li>
+				<li><a href="task.xhtml" accesskey="4" title="">Task</a></li>
+				<li><p:commandLink
+						actionListener="#{verbuchenController.reload}"
+						action="verbuchen.xhtml" accesskey="5" title="" immediate="true">Verbuchen</p:commandLink></li>
+				<li><a href="auswertung.xhtml" accesskey="6" title="">Auswertung</a></li>
+			</ul>
+		</div>
 
 
-					<rich:dataScroller for="korrektur-table" maxPages="5">
+	</ui:define>
+	<ui:define name="cph_content">
+		<h:form id="form">
+			<h:panelGroup id="korrektur" layout="block">
+				<p:outputPanel>
+					<p:dataTable var="journal" value="#{korrekturController.buchungen}"
+						id="korrektur-table"
+						selection="#{korrekturController.selectedItem}"
+						selectionMode="single" scrollable="true" scrollHeight="150"
+						rowKey="#{journal.nr}" update=":form:korrektur">
+						<f:facet name="header">Korrektur</f:facet>
+						<p:ajax event="rowSelect"
+							listener="#{korrekturController.onRowSelect}"
+							update=":form:korrektur" />
+						<p:column headerText="Nr">
+							<h:outputText value="#{journal.nr}" />
+						</p:column>
+						<p:column headerText="Datum">
 
-						<f:facet name="first">
-							<h:outputText value="Erste Seite" />
-						</f:facet>
+							<h:outputText value="#{journal.datum}" />
+						</p:column>
 
-						<f:facet name="last">
-							<h:outputText value="Letzte Seite" />
-						</f:facet>
+						<p:column headerText="Stunden">
+							<h:outputText value="#{journal.stunden}" />
+						</p:column>
 
-					</rich:dataScroller>
+						<p:column headerText="Task">
 
-				</f:facet>
+							<h:outputText value="#{journal.task.name}" />
+						</p:column>
 
-			</rich:extendedDataTable>
+						<p:column headerText="Bemerkung">
 
-			<a4j:outputPanel id="edit-form">
+							<h:outputText value="#{journal.bemerkung}" />
+						</p:column>
 
-				<ui:include src="korrekturEdit.xhtml" />
+					</p:dataTable>
+				</p:outputPanel>
+				<p:outputPanel>
+					<ui:include src="korrekturEdit.xhtml" />
+				</p:outputPanel>
 
-			</a4j:outputPanel>
-
-	</h:panelGroup>
+			</h:panelGroup>
+		</h:form>
+	</ui:define>
 </ui:composition>

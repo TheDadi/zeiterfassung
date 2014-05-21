@@ -3,79 +3,95 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:a4j="http://richfaces.org/a4j"
-	xmlns:rich="http://richfaces.org/rich"
-	xmlns:jsflot="http://www.jsflot.org/taglib/jsflot">
+	template="/WEB-INF/templates/template2.xhtml"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="cph_menu">
 
-	<jsflot:resources />
+		<div id="menu">
+			<ul>
+				<li><h:outputLink value="index.xhtml">Home</h:outputLink></li>
+				<li><h:outputLink value="journal.xhtml">Übersicht</h:outputLink></li>
+				<li><a href="korrektur.xhtml" accesskey="3" title="">Korrektur</a></li>
+				<li><a href="task.xhtml" accesskey="4" title="">Task</a></li>
+				<li><p:commandLink
+						actionListener="#{verbuchenController.reload}"
+						action="verbuchen.xhtml" accesskey="5" title=""
+						immediate="true">Verbuchen</p:commandLink></li>
+				<li class="current_page_item"><a href="auswertung.xhtml"
+					accesskey="6" title="">Auswertung</a></li>
+			</ul>
+		</div>
 
-	<a4j:outputPanel id="auswertung">
 
-		<rich:panel headerClass="auswertungTitel">
+	</ui:define>
+	<ui:define name="cph_content">
+		<h:form>
+			<p:outputPanel id="auswertung">
 
-			<f:facet name="header">
+				<p:panel headerClass="auswertungTitel">
 
-				<h:commandLink action="#{auswertungPagingController.letzterMonat()}"
-					immediate="true" render=":auswertung" styleClass="letzterMonat">
-					<h:graphicImage name="gfx/arrow_left_small.png" />
-				</h:commandLink>
-				<h:outputText value="#{auswertungPagingController.monat}">
-					<f:convertDateTime pattern="MMMM yyyy" />
-				</h:outputText>
-				<h:commandLink
-					action="#{auswertungPagingController.naechsterMonat()}"
-					render=":auswertung" styleClass="naechsterMonat">
-					<h:graphicImage name="gfx/arrow_right_small.png" />
-				</h:commandLink>
+					<f:facet name="header">
 
-			</f:facet>
+						<h:commandLink
+							action="#{auswertungPagingController.letzterMonat()}"
+							immediate="true" render=":auswertung" styleClass="letzterMonat">
+							<h:graphicImage name="gfx/arrow_left_small.png" />
+						</h:commandLink>
+						<h:outputText value="#{auswertungPagingController.monat}">
+							<f:convertDateTime pattern="MMMM yyyy" />
+						</h:outputText>
+						<h:commandLink
+							action="#{auswertungPagingController.naechsterMonat()}"
+							render=":auswertung" styleClass="naechsterMonat">
+							<h:graphicImage name="gfx/arrow_right_small.png" />
+						</h:commandLink>
 
-			<h:panelGrid columns="2" styleClass="diagrammTable">
-
-				<rich:panel>
-					<f:facet name="header" >
-						Verbuchung
 					</f:facet>
 
-					<jsflot:flotChart id="verbuchChart" 
-						value="#{auswertungController.verbuchbarChart}" chartType="pie"
-						showXaxisLabels="false" showYaxisLabels="false" legendOpacity="1"
-						legendColumns="1" legendPosition="ne" />
+					<h:panelGrid columns="2" styleClass="diagrammTable">
 
-					<rich:dataTable var="buchung" rendered="#{not empty auswertungController.nichtVerbuchbar}"
-						value="#{auswertungController.nichtVerbuchbar}">
-						<f:facet name="header">
+						<p:panel style="min-height:100%;">
+							<f:facet name="header">
+						Verbuchung
+							</f:facet>
+
+							<p:chart type="pie"
+								model="#{auswertungController.verbuchbarChart}" />
+
+
+
+						</p:panel>
+
+						<p:panel style="min-height:100%;">
+							<f:facet name="header">
+						Buchart
+							</f:facet>
+							<p:chart type="pie" model="#{auswertungController.buchartChart}" />
+						</p:panel>
+
+					</h:panelGrid>
+
+				</p:panel>
+
+			</p:outputPanel>
+		</h:form>
+		<p:dataTable var="buchung" rendered="#{not empty auswertungController.nichtVerbuchbar}"
+						value="#{auswertungController.nichtVerbuchbar}" scrollable="true" scrollHeight="150">
+			<f:facet name="header">
 							Nicht verbuchbar
 						</f:facet>
 
-						<rich:column>
-							<h:outputText value="#{buchung.datum}" />
-						</rich:column>
+			<p:column>
+				<h:outputText value="#{buchung.datum}" />
+			</p:column>
 
-						<rich:column>
-							<h:outputText value="#{buchung.stunden}" />
-						</rich:column>
+			<p:column>
+				<h:outputText value="#{buchung.stunden}" />
+			</p:column>
 
-						<rich:column>
-							<h:outputText value="#{buchung.task.name}" />
-						</rich:column>
-					</rich:dataTable>
-				</rich:panel>
-
-				<rich:panel>
-					<f:facet name="header" >
-						Buchart
-					</f:facet>
-				
-					<jsflot:flotChart id="buchartChart" 
-						value="#{auswertungController.buchartChart}" chartType="pie"
-						showXaxisLabels="false" showYaxisLabels="false" legendOpacity="1"
-						legendColumns="1" legendPosition="ne" />
-				</rich:panel>
-				
-			</h:panelGrid>
-
-		</rich:panel>
-
-	</a4j:outputPanel>
+			<p:column>
+				<h:outputText value="#{buchung.task.name}" />
+			</p:column>
+		</p:dataTable>
+	</ui:define>
 </ui:composition>
