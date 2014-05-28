@@ -7,10 +7,6 @@
 		<param-value>client</param-value>
 	</context-param>
 	<context-param>
-		<param-name>org.richfaces.skin</param-name>
-		<param-value>blueSky</param-value>
-	</context-param>
-	<context-param>
 		<param-name>primefaces.THEME</param-name>
 		<param-value>bootstrap</param-value>
 	</context-param>
