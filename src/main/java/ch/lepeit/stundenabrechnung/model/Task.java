@@ -28,13 +28,18 @@ public class Task implements Serializable {
     // bi-directional many-to-one association to Journal
     @OneToMany(mappedBy = "task")
     private List<Journal> journals;
+    
+  //bi-directional many-to-one association to Benutzer
+  	@ManyToOne
+  	@JoinColumn(name="benutzer_id")
+  	private Benutzer benutzer;
 
     @Id
     private String name;
 
     private String plantaname;
 
-    private boolean verbuchbar;
+    private int verbuchbar;
 
     public Task() {
     }
@@ -67,7 +72,10 @@ public class Task implements Serializable {
     }
 
     public boolean getVerbuchbar() {
-        return this.verbuchbar;
+        if(this.verbuchbar == 0)
+      	   return false;
+         else
+      	   return true;
     }
 
     public void setBuchart(Buchart buchart) {
@@ -87,7 +95,17 @@ public class Task implements Serializable {
     }
 
     public void setVerbuchbar(boolean verbuchbar) {
-        this.verbuchbar = verbuchbar;
+    	if(verbuchbar)
+    		this.verbuchbar = 1;
+    	else
+			this.verbuchbar = 0;
     }
+	public Benutzer getBenutzer() {
+		return this.benutzer;
+	}
+
+	public void setBenutzer(Benutzer benutzer) {
+		this.benutzer = benutzer;
+	}
 
 }

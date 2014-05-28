@@ -15,9 +15,7 @@
 				<li><a href="korrektur.xhtml" accesskey="3" title="">Korrektur</a></li>
 				<li class="current_page_item"><a href="task.xhtml"
 					accesskey="4" title="">Task</a></li>
-				<li><p:commandLink
-						actionListener="#{verbuchenController.reload}"
-						action="verbuchen.xhtml" accesskey="5" title="" immediate="true">Verbuchen</p:commandLink></li>
+				<li><h:outputLink value="verbuchen.xhtml" accesskey="5">Verbuchen</h:outputLink></li>
 				<li><a href="auswertung.xhtml" accesskey="6" title="">Auswertung</a></li>
 			</ul>
 		</div>
@@ -84,7 +82,7 @@
 				</p:dataTable>
 			</h:form>
 			<h:form id="form">
-				<p:messages id="messages2" />
+				<p:messages id="messages2" closable="true"/>
 				<h:panelGrid columns="5" styleClass="panelGrid">
 
 

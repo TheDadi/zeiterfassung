@@ -21,86 +21,113 @@ import javax.persistence.TemporalType;
  */
 @Entity
 public class Journal implements Serializable {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private String bemerkung;
+	private String bemerkung;
 
-    @Temporal(TemporalType.DATE)
-    private Date datum = new Date();
+	@Temporal(TemporalType.DATE)
+	private Date datum = new Date();
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int nr;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int nr;
 
-    private boolean plantaverbucht;
+	private int plantaverbucht;
 
-    private Double stunden;
+	private Double stunden;
 
-    // bi-directional many-to-one association to Task
-    @ManyToOne
-    @JoinColumn(name = "TASK")
-    private Task task;
+	// bi-directional many-to-one association to Benutzer
+	@ManyToOne
+	@JoinColumn(name = "benutzer_id")
+	private Benutzer benutzer;
 
-    public Journal() {
-    }
+	// bi-directional many-to-one association to Task
+	@ManyToOne
+	@JoinColumn(name = "TASK")
+	private Task task;
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null) {
-            return false;
-        }
+	public Journal() {
+	}
 
-        Journal j = (Journal) o;
+	@Override
+	public boolean equals(Object o) {
+		if (o == null) {
+			return false;
+		}
 
-        return this.nr == j.getNr();
-    }
+		Journal j = (Journal) o;
 
-    public String getBemerkung() {
-        return this.bemerkung;
-    }
+		return this.nr == j.getNr();
+	}
 
-    public Date getDatum() {
-        return this.datum;
-    }
+	public String getBemerkung() {
+		return this.bemerkung;
+	}
 
-    public int getNr() {
-        return this.nr;
-    }
+	public Date getDatum() {
+		return this.datum;
+	}
 
-    public boolean getPlantaverbucht() {
-        return this.plantaverbucht;
-    }
+	public int getNr() {
+		return this.nr;
+	}
 
-    public Double getStunden() {
-        return this.stunden;
-    }
+	public boolean getPlantaverbucht() {
+		if (this.plantaverbucht == 0)
+			return false;
+		else
+			return true;
+	}
 
-    public Task getTask() {
-        return this.task;
-    }
+	public Double getStunden() {
+		return this.stunden;
+	}
 
-    public void setBemerkung(String bemerkung) {
-        this.bemerkung = bemerkung;
-    }
+	public Task getTask() {
+		return this.task;
+	}
 
-    public void setDatum(Date datum) {
-        this.datum = datum;
-    }
+	public void setBemerkung(String bemerkung) {
+		this.bemerkung = bemerkung;
+	}
 
-    public void setNr(int nr) {
-        this.nr = nr;
-    }
+	public void setDatum(Date datum) {
+		this.datum = datum;
+	}
 
-    public void setPlantaverbucht(boolean plantaverbucht) {
-        this.plantaverbucht = plantaverbucht;
-    }
+	public void setNr(int nr) {
+		this.nr = nr;
+	}
 
-    public void setStunden(Double stunden) {
-        this.stunden = stunden;
-    }
+	public void setPlantaverbucht(boolean plantaverbucht) {
 
-    public void setTask(Task task) {
-        this.task = task;
-    }
+		if (plantaverbucht)
+			this.plantaverbucht = 1;
+		else
+			this.plantaverbucht = 0;
+
+	}
+
+	public void setPlantaverbucht(int plantaverbucht) {
+
+		this.plantaverbucht = plantaverbucht;
+
+	}
+
+	public void setStunden(Double stunden) {
+		this.stunden = stunden;
+	}
+
+	public void setTask(Task task) {
+		this.task = task;
+	}
+
+	public Benutzer getBenutzer() {
+		return this.benutzer;
+	}
+
+	public void setBenutzer(Benutzer benutzer) {
+		this.benutzer = benutzer;
+	}
 
 }

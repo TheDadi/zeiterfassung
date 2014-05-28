@@ -36,8 +36,8 @@ strong {
 	
 }
 
-a {
-	color: #2980b9;
+a:FOCUS {
+	outline: none;
 }
 
 a:hover {
@@ -84,6 +84,9 @@ a:hover {
 .image-centered img {
 	margin: 0 auto;
 	width: auto;
+}
+.ui-widget-header a{
+	color:white;
 }
 
 
@@ -233,6 +236,7 @@ a:hover {
 	border-top: 1px solid rgba(0, 0, 0, 0.08);
 	min-height: 25em;
 }
+
 
 /*********************************************************************************/
 /* Sidebar                                                                       */

@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -23,6 +24,8 @@ import ch.lepeit.stundenabrechnung.model.Verbuchbar;
 public class AuswertungService {
     @PersistenceContext
     private EntityManager em;
+    @EJB
+    private LoginService loginService;
 
     /**
      * Berechnet, mit welchem Tool wie viel Zeit verbucht wurde.
@@ -34,7 +37,7 @@ public class AuswertungService {
     public List<BuchartStunden> getBuchartProMonat(Date monat) {
         TypedQuery<BuchartStunden> q = em
                 .createQuery(
-                        "SELECT new ch.lepeit.stundenabrechnung.model.BuchartStunden(j.task.buchart.art, SUM(j.stunden)) FROM Journal j WHERE YEAR(j.datum) = :jahr AND MONTH(j.datum) = :monat GROUP BY j.task.buchart.art",
+                        "SELECT new ch.lepeit.stundenabrechnung.model.BuchartStunden(j.task.buchart.art, SUM(j.stunden)) FROM Journal j WHERE YEAR(j.datum) = :jahr AND MONTH(j.datum) = :monat and j.benutzer=:benutzer GROUP BY j.task.buchart.art",
                         BuchartStunden.class);
 
         Calendar c = new GregorianCalendar();
@@ -42,7 +45,7 @@ public class AuswertungService {
 
         q.setParameter("jahr", c.get(Calendar.YEAR));
         q.setParameter("monat", c.get(Calendar.MONTH) + 1); // + 1 Da Calendar Monate von 0 aus zählt
-
+        q.setParameter("benutzer", loginService.getBenutzer());
         return q.getResultList();
     }
 
@@ -56,7 +59,7 @@ public class AuswertungService {
     public List<Verbuchbar> getVerbuchbar(Date monat) {
         TypedQuery<Verbuchbar> q = em
                 .createQuery(
-                        "SELECT new ch.lepeit.stundenabrechnung.model.Verbuchbar(j.task.verbuchbar, SUM(stunden)) FROM Journal j WHERE YEAR(j.datum) = :jahr AND MONTH(j.datum) = :monat GROUP BY j.task.verbuchbar",
+                        "SELECT new ch.lepeit.stundenabrechnung.model.Verbuchbar(j.task.verbuchbar, SUM(stunden)) FROM Journal j WHERE YEAR(j.datum) = :jahr AND MONTH(j.datum) = :monat and j.benutzer=:benutzer GROUP BY j.task.verbuchbar",
                         Verbuchbar.class);
 
         Calendar c = new GregorianCalendar();
@@ -64,6 +67,7 @@ public class AuswertungService {
 
         q.setParameter("jahr", c.get(Calendar.YEAR));
         q.setParameter("monat", c.get(Calendar.MONTH) + 1); // + 1 Da Calendar Monate von 0 aus zählt
+        q.setParameter("benutzer", loginService.getBenutzer());
 
         return q.getResultList();
     }

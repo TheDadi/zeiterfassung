@@ -12,57 +12,81 @@ import java.util.Date;
  * 
  */
 public class GroupedJournal implements Serializable {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private Date datum;
+	private Date datum;
 
-    private boolean plantaverbucht;
+	private int plantaverbucht;
 
-    private Double stunden;
+	private Double stunden;
 
-    private Task task;
+	private Task task;
 
-    public GroupedJournal() {
-    }
+	public GroupedJournal() {
+	}
 
-    public GroupedJournal(Date datum, Double stunden, Task task, boolean plantaverbucht) {
-        super();
-        this.datum = datum;
-        this.stunden = stunden;
-        this.task = task;
-        this.plantaverbucht = plantaverbucht;
-    }
+	public GroupedJournal(Date datum, Double stunden, Task task,
+			boolean plantaverbucht) {
+		super();
+		this.datum = datum;
+		this.stunden = stunden;
+		this.task = task;
+		this.setPlantaverbucht(plantaverbucht);
+	}
 
-    public Date getDatum() {
-        return datum;
-    }
+	public GroupedJournal(Date datum, Double stunden, Task task,
+			int plantaverbucht) {
+		super();
+		this.datum = datum;
+		this.stunden = stunden;
+		this.task = task;
+		this.plantaverbucht = plantaverbucht;
+	}
 
-    public Double getStunden() {
-        return stunden;
-    }
+	public Date getDatum() {
+		return datum;
+	}
 
-    public Task getTask() {
-        return task;
-    }
+	public Double getStunden() {
+		return stunden;
+	}
 
-    public boolean isPlantaverbucht() {
-        return plantaverbucht;
-    }
+	public Task getTask() {
+		return task;
+	}
 
-    public void setDatum(Date datum) {
-        this.datum = datum;
-    }
+	public boolean isPlantaverbucht() {
+		if (plantaverbucht == 0)
+			return false;
+		else
+			return true;
+	}
 
-    public void setPlantaverbucht(boolean plantaverbucht) {
-        this.plantaverbucht = plantaverbucht;
-    }
+	public void setDatum(Date datum) {
+		this.datum = datum;
+	}
 
-    public void setStunden(Double stunden) {
-        this.stunden = stunden;
-    }
+	public void setPlantaverbucht(boolean plantaverbucht) {
 
-    public void setTask(Task task) {
-        this.task = task;
-    }
+		if (plantaverbucht)
+			this.plantaverbucht = 1;
+		else
+			this.plantaverbucht = 0;
+
+	}
+
+	public void setPlantaverbucht(int plantaverbucht) {
+
+		this.plantaverbucht = plantaverbucht;
+
+	}
+
+	public void setStunden(Double stunden) {
+		this.stunden = stunden;
+	}
+
+	public void setTask(Task task) {
+		this.task = task;
+	}
 
 }

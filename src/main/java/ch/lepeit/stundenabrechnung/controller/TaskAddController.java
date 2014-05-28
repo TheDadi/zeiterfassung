@@ -11,6 +11,8 @@ import javax.inject.Named;
 import ch.lepeit.stundenabrechnung.model.Buchart;
 import ch.lepeit.stundenabrechnung.model.Task;
 import ch.lepeit.stundenabrechnung.service.BuchartService;
+import ch.lepeit.stundenabrechnung.service.JournalService;
+import ch.lepeit.stundenabrechnung.service.LoginService;
 import ch.lepeit.stundenabrechnung.service.TaskService;
 
 @Named
@@ -27,6 +29,9 @@ public class TaskAddController implements Serializable {
 
     @EJB
     private TaskService taskService;
+    
+    @EJB
+	private LoginService loginService;
 
     public String getBuchart() {
         return buchart;
@@ -47,6 +52,8 @@ public class TaskAddController implements Serializable {
 
     public String save() {
         task.setBuchart(buchartService.getBuchart(this.buchart));
+        
+        task.setBenutzer(loginService.getBenutzer());
 
         taskService.save(task);
 

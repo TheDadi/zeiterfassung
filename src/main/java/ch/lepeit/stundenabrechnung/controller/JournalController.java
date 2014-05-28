@@ -1,6 +1,7 @@
 package ch.lepeit.stundenabrechnung.controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -12,6 +13,10 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
+import org.primefaces.event.DragDropEvent;
+
+import ch.lepeit.stundenabrechnung.datamodel.GroupedJournalModel;
+import ch.lepeit.stundenabrechnung.model.GroupedJournal;
 import ch.lepeit.stundenabrechnung.model.Wochentag;
 import ch.lepeit.stundenabrechnung.service.JournalService;
 
@@ -38,6 +43,9 @@ public class JournalController implements Serializable {
 
 	private List<Wochentag> wochentage;
 
+	private List<Wochentag> droppedJournals;
+
+	private GroupedJournalModel groupedJournalModel;
 	public Date getWoche() {
 		return woche;
 	}
@@ -48,12 +56,21 @@ public class JournalController implements Serializable {
 		this.loadWoche(c.getTime());
 		return wochentage;
 	}
+	
+	public GroupedJournalModel getWochentage2() {
+		Calendar c = new GregorianCalendar();
+		c.setTime(this.getWoche());
+		this.loadWoche(c.getTime());
+		groupedJournalModel = new GroupedJournalModel(wochentage);
+		return groupedJournalModel;
+	}
 
 	@PostConstruct
 	public void init() {
 		// Startdatum auf Tagesdatum setzen, Wochentage berechnen und Buchungen
 		// laden
 		this.loadWoche(new Date());
+		droppedJournals = new ArrayList<Wochentag>();
 	}
 
 	public String letzteWoche() {
@@ -100,6 +117,29 @@ public class JournalController implements Serializable {
 
 	public void reload() {
 		this.loadWoche(this.getWoche());
+	}
+
+	public List<Wochentag> getDroppedJournals() {
+		return droppedJournals;
+	}
+
+	public void setDroppedJournals(List<Wochentag> droppedJournals) {
+		this.droppedJournals = droppedJournals;
+	}
+
+	public void onJournalDrop(DragDropEvent ddEvent) {
+		System.out.println("gnitös");
+		Wochentag journal = ((Wochentag) ddEvent.getData());
+
+		droppedJournals.add(journal);
+	}
+
+	public GroupedJournalModel getGroupedJournalModel() {
+		return groupedJournalModel;
+	}
+
+	public void setGroupedJournalModel(GroupedJournalModel groupedJournalModel) {
+		this.groupedJournalModel = groupedJournalModel;
 	}
 
 }

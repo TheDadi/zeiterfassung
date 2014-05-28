@@ -11,6 +11,7 @@ import javax.inject.Named;
 import ch.lepeit.stundenabrechnung.model.Journal;
 import ch.lepeit.stundenabrechnung.model.Task;
 import ch.lepeit.stundenabrechnung.service.JournalService;
+import ch.lepeit.stundenabrechnung.service.LoginService;
 import ch.lepeit.stundenabrechnung.service.TaskService;
 
 /**
@@ -30,6 +31,9 @@ public class JournalAddController {
     @Inject
     private JournalController journalController;
 
+    @EJB
+    private LoginService loginService;
+    
     @EJB
     private JournalService journalService;
 
@@ -64,6 +68,7 @@ public class JournalAddController {
 
     public String save() {
         // Journal speichern
+    	this.journal.setBenutzer(loginService.getBenutzer());
         journalService.save(this.journal);
 
         // Neues leeres Journal

@@ -13,9 +13,8 @@
 				<li><h:outputLink value="journal.xhtml">Übersicht</h:outputLink></li>
 				<li><a href="korrektur.xhtml" accesskey="3" title="">Korrektur</a></li>
 				<li><a href="task.xhtml" accesskey="4" title="">Task</a></li>
-				<li class="current_page_item"><p:commandLink
-						actionListener="#{verbuchenController.reload}"
-						action="verbuchen.xhtml" accesskey="5" title="" immediate="true">Verbuchen</p:commandLink></li>
+				<li class="current_page_item"><h:outputLink
+						value="verbuchen.xhtml" accesskey="5">Verbuchen</h:outputLink></li>
 				<li><a href="auswertung.xhtml" accesskey="6" title="">Auswertung</a></li>
 			</ul>
 		</div>
@@ -61,7 +60,11 @@
 					<p:column>
 						<f:facet name="header">
 					Verbucht
-				</f:facet>
+											<p:commandButton id="refresh" ajax="true"
+								actionListener="#{verbuchenController.reload}"
+								icon="ui-icon ui-icon-arrowrefresh-1-e" update=":form:verbuchen"
+								style="float:right;" />
+						</f:facet>
 						<p:commandLink
 							actionListener="#{verbuchenController.verbuchen(journal)}"
 							update=":form:verbuchen">
@@ -71,10 +74,16 @@
 
 
 					</p:column>
+					<f:facet name="header">
+						<h:outputText value="Verbuchen" />
+
+					</f:facet>
 
 
 
 				</p:dataTable>
+
+
 
 
 

@@ -2,6 +2,7 @@ package ch.lepeit.stundenabrechnung.service;
 
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,6 +20,8 @@ public class TaskService {
 
     @PersistenceContext
     private EntityManager em;
+    @EJB
+    private LoginService loginService;
 
     /**
      * Löschen eines Tasks über dessen Namen
@@ -47,7 +50,7 @@ public class TaskService {
      * @return Liste aller Tasks
      */
     public List<Task> getTasks() {
-        return em.createQuery("SELECT t FROM Task t", Task.class).getResultList();
+        return em.createQuery("SELECT t FROM Task t where t.benutzer =:benutzer", Task.class).setParameter("benutzer",loginService.getBenutzer()).getResultList();
     }
 
     /**

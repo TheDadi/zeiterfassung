@@ -15,9 +15,7 @@
 				<li class="current_page_item"><a href="korrektur.xhtml"
 					accesskey="3" title="">Korrektur</a></li>
 				<li><a href="task.xhtml" accesskey="4" title="">Task</a></li>
-				<li><p:commandLink
-						actionListener="#{verbuchenController.reload}"
-						action="verbuchen.xhtml" accesskey="5" title="" immediate="true">Verbuchen</p:commandLink></li>
+				<li><h:outputLink value="verbuchen.xhtml" accesskey="5">Verbuchen</h:outputLink></li>
 				<li><a href="auswertung.xhtml" accesskey="6" title="">Auswertung</a></li>
 			</ul>
 		</div>
@@ -26,6 +24,7 @@
 	</ui:define>
 	<ui:define name="cph_content">
 		<h:form id="form">
+			<p:growl id="growl" showDetail="false" sticky="false" life="4000" />
 			<h:panelGroup id="korrektur" layout="block">
 				<p:outputPanel>
 					<p:dataTable var="journal" value="#{korrekturController.buchungen}"
